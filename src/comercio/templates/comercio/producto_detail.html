@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Producto: Vista en detalle</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Nombre:</dt>
+                    <dd class="col-sm-9">{{ object.nombre }}</dd>
+
+                    <dt class="col-sm-3">Descripción:</dt>
+                    <dd class="col-sm-9">
+                        {% if object.descripcion %}
+                            {{ object.descripcion}}
+                        {% else %}
+                            <em>Sin descripción</em>
+                        {% endif %}
+                    </dd>
+                </dl>
+                <div class="btn-group" role="group">
+                    <a href="{% url 'comercio:producto_list' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                    {% if request.user.is_superuser %}
+                    <a href="{% url 'comercio:categoria_update' object.id %}" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <a href="{% url 'comercio:categoria_delete' object.id %}" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Eliminar
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

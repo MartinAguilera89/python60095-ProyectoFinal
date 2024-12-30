@@ -1,0 +1,54 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}
+    Detalle de Venta
+{% endblock title %}
+
+{% block content %}
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Venta #{{ object.id }}</h6>
+                        <div class="btn-group">
+                            <a href="{% url 'comercio:venta_list' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Volver
+                            </a>
+                            {% if request.user.is_superuser or request.user == object.vendedor.usuario %}
+                            <a href="{% url 'comercio:venta_update' object.id %}" class="btn btn-warning">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
+                            <a href="{% url 'comercio:venta_delete' object.id %}" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-3">Vendedor:</dt>
+                            <dd class="col-sm-9">{{ object.vendedor.usuario.username }}</dd>
+
+                            <dt class="col-sm-3">Producto:</dt>
+                            <dd class="col-sm-9">{{ object.producto.nombre }}</dd>
+
+                            <dt class="col-sm-3">Cantidad:</dt>
+                            <dd class="col-sm-9">{{ object.cantidad }}</dd>
+
+                            <dt class="col-sm-3">Precio Unitario:</dt>
+                            <dd class="col-sm-9">${{ object.producto.precio }}</dd>
+
+                            <dt class="col-sm-3">Precio Total:</dt>
+                            <dd class="col-sm-9">${{ object.precio_total }}</dd>
+
+                            <dt class="col-sm-3">Fecha:</dt>
+                            <dd class="col-sm-9">{{ object.fecha }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

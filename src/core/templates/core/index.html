@@ -4,34 +4,22 @@
 
 {% block content %}
     <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold">La Caja de Pandora</h1>
+        <h1 class="display-4 fw-bold">FOREVER</h1>
     </div>
 
     <div class="row g-4 g-lg-5 align-items-center mb-5">
-        <div class="col-lg-7">
-            <img src="{% static 'core/img/cajapandora.webp' %}" alt="imagen" class="img-fluid rounded shadow-lg">
+        <div class="col-lg-12">
+            <img src="{% static 'core/img/LOCAL.jpg' %}" alt="imagen" class="img-fluid rounded shadow-lg">
         </div>
-        <div class="col-lg-5">
-            <h2 class="fw-bold mb-3">Soluciones Innovadoras</h2>
-            <p class="lead mb-4">Ofrecemos una amplia gama de servicios y productos diseñados para satisfacer las necesidades de cualquier tipo de negocio. Nuestro enfoque está en la innovación y la calidad, asegurando que nuestros clientes siempre reciban lo mejor.</p>
-            <a class="btn btn-primary btn-lg" href="#!">¡Comienza Ahora!</a>
+        <div class="col-lg-12 text-center">
+            <h2 class="fw-bold mb-3">VAMOS A ROCANROLEAR POR SIEMPRE</h2>
+            <p class="lead mb-4">Somos un local de ropa apuntado a aquellas personas que siempre quieren estar a la moda temporada tras temporada...</p>
         </div>
     </div>
 
     <div class="card bg-primary text-white my-5 shadow">
         <div class="card-body p-5 text-center">
-            <h3 class="fw-light mb-0">¡Descubre nuestras ofertas especiales y promociones exclusivas!</h3>
+            <h3 class="fw-light mb-0">Visita nuestros catalogos y nuestro SALE con las mejores promociones!!!</h3>
         </div>
-    </div>
-
-    <div class="row g-4">
-        {% include 'core/componentes/card.html' with titulo="Tarjeta 1" contenido="Esto está bueno!!" %}
-        {% include 'core/componentes/card.html' with titulo="Tarjeta 2" %}
-        {% include 'core/componentes/card.html' %}
-        {% include 'core/componentes/card.html' %}
-        {% include 'core/componentes/card.html' %}
-        {% include 'core/componentes/card.html' %}
-        {% include 'core/componentes/card.html' %}
-        {% include 'core/componentes/card.html' %}
     </div>
 {% endblock content %}

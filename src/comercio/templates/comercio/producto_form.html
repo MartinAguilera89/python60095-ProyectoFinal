@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+    <div class="container py-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                {% if form.instance.pk %}
+                    <h1 class="card-title mb-4 text-primary">Producto: Formulario de edición</h1>
+                {% else %}
+                    <h1 class="card-title mb-4 text-primary">Producto: Formulario de creación</h1>
+                {% endif %}
+                <form method="post" class="needs-validation">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {{ field|add_class:"form-control" }}
+                        </div>
+                    {% endfor %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button type="submit" class="btn btn-primary me-md-2">Enviar</button>
+                        <a href="{% url 'comercio:producto_list' %}" class="btn btn-secondary">Volver</a>
+                        <a href="{% url 'core:index' %}" class="btn btn-outline-primary">Inicio</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

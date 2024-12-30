@@ -15,12 +15,14 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'password1', 'password2']
-        help_texts = {'username': ''}
+        help_texts = {
+            'username': 'Ingrese un nombre de usuario único. Puede contener letras, números y @/./+/-/_',
+        }
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.fields['password1'].help_text = ''
-        self.fields['password2'].help_text = ''
+        self.fields['password2'].help_text = 'Ingrese la misma contraseña que antes, para verificación'
 
 
 class UserProfileForm(forms.ModelForm):

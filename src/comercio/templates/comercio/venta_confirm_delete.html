@@ -1,0 +1,34 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}
+    Confirmar Eliminación de Venta
+{% endblock title %}
+
+{% block content %}
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-danger">Confirmar Eliminación</h6>
+                    </div>
+                    <div class="card-body">
+                        <p>¿Estás seguro de que deseas eliminar la venta <strong>#{{ object.id }}</strong>?</p>
+                        <p>Esta acción no se puede deshacer.</p>
+                        <form method="post">{% csrf_token %}
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                                <a href="{% url 'comercio:venta_list' %}" class="btn btn-secondary">
+                                    <i class="fas fa-arrow-left"></i> Cancelar
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
