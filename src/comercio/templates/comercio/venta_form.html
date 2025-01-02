@@ -15,6 +15,14 @@
                             {{ field|add_class:"form-control" }}
                         </div>
                     {% endfor %}
+                    <div class="mb-3">
+                        {{ form.fecha_compra.label_tag }}
+                        {{ form.fecha_compra|add_class:"form-control" }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.precio_total.label_tag }}
+                        {{ form.precio_total|add_class:"form-control" }}
+                    </div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
                         <button type="submit" class="btn btn-success me-md-2">Vender</button>
                         <a href="{% url 'comercio:venta_list' %}" class="btn btn-secondary">Volver</a>

@@ -84,6 +84,17 @@ class Venta(models.Model):
         blank=True,
         help_text='Vendedor que realizó la venta'
     )
+    producto = models.ForeignKey(
+        Producto,
+        on_delete=models.CASCADE,
+        related_name='ventas',
+        null=True,
+        help_text='Producto vendido'
+    )
+    cantidad = models.PositiveIntegerField(
+        default=1,
+        help_text='Cantidad de producto vendido'
+    )
     fecha = models.DateTimeField(
         default=timezone.now,
         help_text='Fecha y hora de la venta'

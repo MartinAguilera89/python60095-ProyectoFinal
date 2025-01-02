@@ -4,6 +4,7 @@ from django.db import transaction
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, UpdateView, DeleteView
+from datetime import date
 
 from ..forms import VentaForm, ProductoVentaFormSet, ProductoVentaForm
 from ..models import Vendedor, Venta
@@ -24,9 +25,9 @@ class VentaListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Obtener los productos y cantidades asociados a cada venta
+        # Obtener los productos asociados a cada venta
         for venta in context['object_list']:
-            venta.productos = VentaProducto.objects.filter(venta=venta)
+            venta.producto = venta.producto  # Acceder directamente al campo producto
         return context
 
 
@@ -58,10 +59,29 @@ class VentaCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         try:
             with transaction.atomic():
-                venta = form.save(commit=False)
-                venta.precio_total = form.cleaned_data['cantidad'] * form.cleaned_data['producto'].precio
-                venta.vendedor = form.cleaned_data['vendedor']  # Fijar el vendedor
-                venta.save()  # Guardar la venta primero
+                # Lógica para manejar la creación de una nueva venta según el tipo de usuario
+                if self.request.user.is_superuser:
+                    # Si es superusuario, permite seleccionar cualquier vendedor
+                    form.instance.vendedor = form.cleaned_data['vendedor']
+                else:
+                    # Si es vendedor, se asigna automáticamente
+                    vendedor = Vendedor.objects.get(usuario=self.request.user)
+                    form.instance.vendedor = vendedor
+                
+                # Asignar el producto y restar del stock
+                producto = form.cleaned_data['producto']
+                cantidad = form.cleaned_data['cantidad']
+                form.instance.producto = producto  # Asignar el producto a la venta
+                
+                # Restar la cantidad del stock
+                producto.stock -= cantidad
+                producto.save()  # Guardar el producto con el nuevo stock
+                
+                # Establecer la fecha de compra y calcular el precio total
+                form.instance.fecha_compra = date.today()
+                form.instance.precio_total = form.cleaned_data['cantidad'] * form.instance.producto.precio
+                
+                form.save()  # Guardar la venta
                 messages.success(self.request, 'Venta creada exitosamente')
                 return super().form_valid(form)
         except Exception as e:

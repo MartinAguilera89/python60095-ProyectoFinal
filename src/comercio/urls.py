@@ -1,7 +1,8 @@
 from django.urls import path
 
 from .views import index
-from .views_models import producto, temporada, vendedor, venta
+from .views_models import producto, temporada, vendedor
+from .views_models.venta import VentaCreateView, VentaListView, VentaUpdateView, VentaDetailView, VentaDeleteView
 
 app_name = 'comercio'
 
@@ -32,9 +33,9 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    path('venta/list/', venta.VentaListView.as_view(), name='venta_list'),
-    path('venta/create/', venta.VentaCreateView.as_view(), name='venta_create'),
-    path('venta/update/<int:pk>', venta.VentaUpdateView.as_view(), name='venta_update'),
-    path('venta/detail/<int:pk>', venta.VentaDetailView.as_view(), name='venta_detail'),
-    path('venta/delete/<int:pk>', venta.VentaDeleteView.as_view(), name='venta_delete'),
+    path('venta/list/', VentaListView.as_view(), name='venta_list'),
+    path('venta/create/', VentaCreateView.as_view(), name='venta_create'),
+    path('venta/update/<int:pk>', VentaUpdateView.as_view(), name='venta_update'),
+    path('venta/detail/<int:pk>', VentaDetailView.as_view(), name='venta_detail'),
+    path('venta/delete/<int:pk>', VentaDeleteView.as_view(), name='venta_delete'),
 ]

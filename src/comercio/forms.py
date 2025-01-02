@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.forms import formset_factory
 
 from .models import Producto, Temporada, Vendedor, Venta
+from datetime import datetime, date
 
 
 def validar_nombre(nombre: str):
@@ -98,12 +99,12 @@ class VentaForm(forms.ModelForm):
                 self.fields['vendedor'].widget = forms.HiddenInput()
                 self.fields['vendedor'].initial = vendedor
             except Vendedor.DoesNotExist:
-                self.fields['vendedor'] = forms.CharField(
-                    initial='No es vendedor',
-                    widget=forms.TextInput(attrs={'readonly': 'readonly'}),
-                    help_text='Debe ser vendedor para crear ventas'
-                )
-
+                pass
+        
+        # Eliminar campos de fecha y precio total del formulario
+        # self.fields['fecha_compra'] = forms.DateField(initial=date.today(), label='Fecha de Compra', widget=forms.HiddenInput())
+        # self.fields['precio_total'] = forms.DecimalField(label='Precio Total', min_value=0, decimal_places=2)
+        
     def save(self, commit=True):
         venta = super().save(commit=False)
         # Si es superusuario, el vendedor ya viene del formulario

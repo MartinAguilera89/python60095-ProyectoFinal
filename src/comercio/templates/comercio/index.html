@@ -2,14 +2,14 @@
 
 {% block content %}
     <div class="container mt-4">
-        <h1 class="text-center mb-4">Producto</h1>
+        <h1 class="text-center mb-4 text-bold">MENU</h1>
 
         <div class="row row-cols-1 row-cols-md-2 g-4">
             <div class="col">
                 <a href="{% url 'comercio:temporada_list' %}" class="text-decoration-none">
-                    <div class="card h-100 bg-success text-white">
+                    <div class="card h-100 bg-menu text-white">
                         <div class="card-body">
-                            <h5 class="card-title">Temporadas</h5>
+                            <h5 class="card-title">TEMPORADAS</h5>
                             <p class="card-text">Ver productos de temporada</p>
                         </div>
                     </div>
@@ -18,9 +18,9 @@
 
             <div class="col">
                 <a href="{% url 'comercio:producto_list' %}" class="text-decoration-none">
-                    <div class="card h-100 bg-info text-white">
+                    <div class="card h-100 bg-menu text-white">
                         <div class="card-body">
-                            <h5 class="card-title">Productos</h5>
+                            <h5 class="card-title">PRODUCTOS</h5>
                             <p class="card-text">Administrar productos disponibles</p>
                         </div>
                     </div>
@@ -29,9 +29,9 @@
 
             <div class="col">
                 <a href="{% url 'comercio:vendedor_list' %}" class="text-decoration-none">
-                    <div class="card h-100 bg-warning text-white">
+                    <div class="card h-100 bg-menu text-white">
                         <div class="card-body">
-                            <h5 class="card-title">Vendedores</h5>
+                            <h5 class="card-title">VENDEDORES</h5>
                             <p class="card-text">Ver vendedores</p>
                         </div>
                     </div>
@@ -40,9 +40,9 @@
 
             <div class="col">
                 <a href="{% url 'comercio:venta_list' %}" class="text-decoration-none">
-                    <div class="card h-100 bg-danger text-white">
+                    <div class="card h-100 bg-menu text-white">
                         <div class="card-body">
-                            <h5 class="card-title">Ventas</h5>
+                            <h5 class="card-title">VENTAS</h5>
                             <p class="card-text">Ver registro de ventas</p>
                         </div>
                     </div>

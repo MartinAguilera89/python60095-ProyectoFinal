@@ -30,7 +30,7 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Vendedor</th>
-                                <th>Productos</th>
+                                <th>Producto</th>
                                 <th>Precio Total</th>
                                 <th>Fecha Venta</th>
                                 <th class="text-end">Acciones</th>
@@ -40,26 +40,22 @@
                             {% for venta in object_list %}
                                 <tr>
                                     <td>{{ venta.vendedor.usuario.username }}</td>
-                                    <td>
-                                        <ul>
-                                            {% for producto in venta.productos %}
-                                                <li>{{ producto.producto.nombre }} - Cantidad: {{ producto.cantidad }}</li>
-                                            {% endfor %}
-                                        </ul>
-                                    </td>
+                                    <td>{{ venta.producto.nombre }}</td>
                                     <td>${{ venta.precio_total }}</td>
                                     <td>{{ venta.fecha|date:"d/m/Y H:i" }}</td>
                                     <td class="text-end">
                                         <div class="btn-group" role="group">
-                                            <a href="{% url 'comercio:venta_detail' venta.id %}" class="btn btn-info">Detalles</a>
-                                            <a href="{% url 'comercio:venta_update' venta.id %}" class="btn btn-warning">Editar</a>
-                                            <a href="{% url 'comercio:venta_delete' venta.id %}" class="btn btn-danger">Eliminar</a>
+                                            <a href="{% url 'comercio:venta_detail' venta.id %}" class="btn btn-info btn-sm">Ver</a>
+                                            {% if request.user.is_superuser or request.user == venta.vendedor.usuario %}
+                                            <a href="{% url 'comercio:venta_update' venta.id %}" class="btn btn-warning btn-sm">Editar</a>
+                                            <a href="{% url 'comercio:venta_delete' venta.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                                            {% endif %}
                                         </div>
                                     </td>
                                 </tr>
                             {% empty %}
                                 <tr>
-                                    <td colspan="5" class="text-center py-4">
+                                    <td colspan="7" class="text-center py-4">
                                         <div class="text-muted">
                                             <i class="fas fa-shopping-cart fa-2x mb-3"></i>
                                             <p class="mb-0">No hay ventas disponibles.</p>
