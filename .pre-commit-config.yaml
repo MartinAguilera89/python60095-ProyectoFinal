@@ -19,3 +19,4 @@ repos:
         language: system
         types: [html]
         stages: [pre-commit]
+        
