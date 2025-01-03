@@ -24,14 +24,12 @@ class VendedorAdminForm(forms.ModelForm):
         fields = ('username', 'email', 'password', 'celular', 'avatar')
 
     def save(self, commit=True):
-        # Crear nuevo usuario
         user = User.objects.create_user(
             username=self.cleaned_data['username'],
             email=self.cleaned_data['email'],
             password=self.cleaned_data['password']
         )
         
-        # Crear vendedor
         vendedor = super().save(commit=False)
         vendedor.usuario = user
         if commit:
@@ -57,7 +55,7 @@ class VendedorAdmin(admin.ModelAdmin):
     form = VendedorAdminForm
     list_display = ('usuario', 'celular', 'mostrar_avatar')
     search_fields = ('usuario__username', 'celular')
-    exclude = ('usuario',)  # No mostrar el campo usuario en el formulario
+    exclude = ('usuario',)
 
     def mostrar_avatar(self, obj):
         if obj.avatar:

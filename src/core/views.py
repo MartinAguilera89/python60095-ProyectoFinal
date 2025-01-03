@@ -73,7 +73,6 @@ class UpdateProfileView(UpdateView):
         return self.render_to_response({'form': form})
 
     def get_object(self):
-        # Devuelve el usuario actual en lugar de esperar un pk
         return self.request.user
 
     def get_success_url(self):

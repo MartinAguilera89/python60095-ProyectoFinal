@@ -35,3 +35,7 @@ Los vendedores tienen los siguientes permisos:
 - **Crear, editar y eliminar su propio usuario vendedor.**
 - **Crear, editar y eliminar sus propias ventas.**
 - **Visualizar las temporadas, los productos, los distintos vendedores y las ventas realizadas.**
+
+### Video demostrativo del funcionamiento de la pagina:
+
+https://youtu.be/61tLxkth57I

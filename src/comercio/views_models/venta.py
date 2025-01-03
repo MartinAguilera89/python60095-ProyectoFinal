@@ -13,10 +13,8 @@ class VentaListView(LoginRequiredMixin, ListView):
     model = Venta
 
     def get_queryset(self):
-        # Superusuario ve todas las ventas
         if self.request.user.is_superuser:
             return super().get_queryset()
-        # Vendedor ve solo sus ventas
         try:
             vendedor = Vendedor.objects.get(usuario=self.request.user)
             return Venta.objects.filter(vendedor=vendedor)
@@ -25,9 +23,8 @@ class VentaListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Obtener los productos asociados a cada venta
         for venta in context['object_list']:
-            venta.producto = venta.producto  # Acceder directamente al campo producto
+            venta.producto = venta.producto
         return context
 
 
@@ -37,10 +34,8 @@ class VentaCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('comercio:venta_list')
 
     def dispatch(self, request, *args, **kwargs):
-        # Superusuario siempre puede crear ventas
         if request.user.is_superuser:
             return super().dispatch(request, *args, **kwargs)
-        # Vendedor normal debe existir
         try:
             Vendedor.objects.get(usuario=request.user)
             return super().dispatch(request, *args, **kwargs)
@@ -59,29 +54,23 @@ class VentaCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         try:
             with transaction.atomic():
-                # Lógica para manejar la creación de una nueva venta según el tipo de usuario
                 if self.request.user.is_superuser:
-                    # Si es superusuario, permite seleccionar cualquier vendedor
                     form.instance.vendedor = form.cleaned_data['vendedor']
                 else:
-                    # Si es vendedor, se asigna automáticamente
                     vendedor = Vendedor.objects.get(usuario=self.request.user)
                     form.instance.vendedor = vendedor
                 
-                # Asignar el producto y restar del stock
                 producto = form.cleaned_data['producto']
                 cantidad = form.cleaned_data['cantidad']
-                form.instance.producto = producto  # Asignar el producto a la venta
+                form.instance.producto = producto
                 
-                # Restar la cantidad del stock
                 producto.stock -= cantidad
-                producto.save()  # Guardar el producto con el nuevo stock
+                producto.save()
                 
-                # Establecer la fecha de compra y calcular el precio total
                 form.instance.fecha_compra = date.today()
                 form.instance.precio_total = form.cleaned_data['cantidad'] * form.instance.producto.precio
                 
-                form.save()  # Guardar la venta
+                form.save()
                 messages.success(self.request, 'Venta creada exitosamente')
                 return super().form_valid(form)
         except Exception as e:
@@ -95,10 +84,8 @@ class VentaUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('comercio:venta_list')
 
     def get_queryset(self):
-        # Superusuario puede editar cualquier venta
         if self.request.user.is_superuser:
             return super().get_queryset()
-        # Vendedor solo puede editar sus ventas
         try:
             vendedor = Vendedor.objects.get(usuario=self.request.user)
             return Venta.objects.filter(vendedor=vendedor)
@@ -114,9 +101,7 @@ class VentaUpdateView(LoginRequiredMixin, UpdateView):
         try:
             with transaction.atomic():
                 venta = form.save(commit=False)
-                # Restaurar el stock anterior
                 venta.producto.stock += self.get_object().cantidad
-                # Actualizar con la nueva cantidad
                 venta.producto.stock -= venta.cantidad
                 venta.precio_total = venta.producto.precio * venta.cantidad
                 venta.producto.save()
@@ -132,10 +117,8 @@ class VentaDetailView(LoginRequiredMixin, DetailView):
     model = Venta
 
     def get_queryset(self):
-        # Superusuario puede ver cualquier venta
         if self.request.user.is_superuser:
             return super().get_queryset()
-        # Vendedor solo puede ver sus ventas
         try:
             vendedor = Vendedor.objects.get(usuario=self.request.user)
             return Venta.objects.filter(vendedor=vendedor)
@@ -144,7 +127,6 @@ class VentaDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['productos'] = VentaProducto.objects.filter(venta=self.object)
         return context
 
 
@@ -153,10 +135,8 @@ class VentaDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('comercio:venta_list')
 
     def get_queryset(self):
-        # Superusuario puede eliminar cualquier venta
         if self.request.user.is_superuser:
             return super().get_queryset()
-        # Vendedor solo puede eliminar sus ventas
         try:
             vendedor = Vendedor.objects.get(usuario=self.request.user)
             return Venta.objects.filter(vendedor=vendedor)
@@ -167,7 +147,6 @@ class VentaDeleteView(LoginRequiredMixin, DeleteView):
         try:
             with transaction.atomic():
                 venta = self.get_object()
-                # Restaurar el stock
                 venta.producto.stock += venta.cantidad
                 venta.producto.save()
                 messages.success(request, 'Venta eliminada exitosamente')

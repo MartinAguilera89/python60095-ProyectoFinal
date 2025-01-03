@@ -6,8 +6,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from ..forms import TemporadaForm
 from ..models import Producto, Temporada
 
-# **** TEMPORADA - LIST VIEW
-
 
 def is_superuser(user):
     return user.is_superuser
@@ -23,9 +21,6 @@ def temporada_list(request: HttpRequest) -> HttpResponse:
     return render(request, 'comercio/temporada_list.html', {'object_list': queryset})
 
 
-# **** TEMPORADA - CREATE VIEW
-
-
 @login_required
 @user_passes_test(is_superuser)
 def temporada_create(request: HttpRequest) -> HttpResponse:
@@ -38,9 +33,6 @@ def temporada_create(request: HttpRequest) -> HttpResponse:
     else:
         form = TemporadaForm()
     return render(request, 'comercio/temporada_form.html', {'form': form})
-
-
-# **** TEMPORADA - UPDATE VIEW
 
 
 @login_required
@@ -58,22 +50,15 @@ def temporada_update(request: HttpRequest, pk: int) -> HttpResponse:
     return render(request, 'comercio/temporada_form.html', {'form': form})
 
 
-# **** TEMPORADA - DETAIL VIEW
-
-
 @login_required
 def temporada_detail(request: HttpRequest, pk: int) -> HttpResponse:
     temporada = get_object_or_404(Temporada, pk=pk)
-    # Obtenemos los productos de esta temporada
     productos = Producto.objects.filter(temporada=temporada)
     return render(
         request,
         'comercio/temporada_detail.html',
         {'object': temporada, 'productos': productos}
     )
-
-
-# **** TEMPORADA - DELETE VIEW
 
 
 @login_required

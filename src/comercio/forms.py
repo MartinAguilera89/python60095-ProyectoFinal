@@ -78,13 +78,12 @@ class VentaForm(forms.ModelForm):
 
     class Meta:
         model = Venta
-        fields = ['vendedor', 'producto', 'cantidad']  # Incluyendo producto y cantidad
+        fields = ['vendedor', 'producto', 'cantidad']
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super(VentaForm, self).__init__(*args, **kwargs)
-        
-        # Si es superusuario, puede seleccionar cualquier vendedor
+
         if self.user and self.user.is_superuser:
             self.fields['vendedor'] = forms.ModelChoiceField(
                 queryset=Vendedor.objects.all(),
@@ -92,7 +91,6 @@ class VentaForm(forms.ModelForm):
                 help_text='Seleccione el vendedor para esta venta',
                 required=True
             )
-        # Si es un vendedor normal
         elif self.user:
             try:
                 vendedor = Vendedor.objects.get(usuario=self.user)
@@ -100,14 +98,9 @@ class VentaForm(forms.ModelForm):
                 self.fields['vendedor'].initial = vendedor
             except Vendedor.DoesNotExist:
                 pass
-        
-        # Eliminar campos de fecha y precio total del formulario
-        # self.fields['fecha_compra'] = forms.DateField(initial=date.today(), label='Fecha de Compra', widget=forms.HiddenInput())
-        # self.fields['precio_total'] = forms.DecimalField(label='Precio Total', min_value=0, decimal_places=2)
-        
+
     def save(self, commit=True):
         venta = super().save(commit=False)
-        # Si es superusuario, el vendedor ya viene del formulario
         if not self.user.is_superuser:
             vendedor = Vendedor.objects.get(usuario=self.user)
             venta.vendedor = vendedor
